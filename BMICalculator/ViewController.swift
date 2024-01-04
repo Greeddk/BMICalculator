@@ -21,10 +21,12 @@ class ViewController: UIViewController {
     @IBOutlet var weightMaskingView: UIView!
     @IBOutlet var weightLabel: UILabel!
     @IBOutlet var weightTextField: UITextField!
-    
+    @IBOutlet var seePasswordButton: UIButton!
     
     @IBOutlet var randomBMIButton: UIButton!
     @IBOutlet var calculateButton: UIButton!
+    
+    var isSecretMode: Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +71,19 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
     
+    @IBAction func seePasswordClicked(_ sender: UIButton) {
+        
+        isSecretMode.toggle()
+        if isSecretMode {
+//            seePasswordButton.backgroundImage(for: .normal) = UIImage(systemName: "eye")
+            seePasswordButton.setImage(UIImage(systemName: "eye"), for: .normal)
+            weightTextField.isSecureTextEntry = true
+        } else {
+            seePasswordButton.setImage(UIImage(systemName: "eye.slash"), for: .normal)
+            weightTextField.isSecureTextEntry = false
+        }
+    }
+    
     func setLabels() {
         let titleSize = CGFloat(20)
         let labelSize = CGFloat(12)
@@ -107,9 +122,9 @@ class ViewController: UIViewController {
         weightMaskingView.layer.borderWidth = 2
         weightMaskingView.layer.zPosition = 0
         weightTextField.borderStyle = .none
-        weightTextField.keyboardType = .numberPad
         weightTextField.isSecureTextEntry = true
         weightTextField.layer.zPosition = 1
+        weightTextField.keyboardType = .numberPad
         
     }
     
