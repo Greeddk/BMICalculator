@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var descLabel: UILabel!
     
+    @IBOutlet var nicknameTextField: UITextField!
+    @IBOutlet var resetButton: UIButton!
     @IBOutlet var mainImageView: UIImageView!
     
     @IBOutlet var heightMaskingView: UIView!
@@ -36,6 +38,8 @@ class ViewController: UIViewController {
         setWeightTextField()
         setRandomButton()
         setCalculateButton()
+        setResetButton()
+        setNicknameTextField()
     }
     
     
@@ -63,7 +67,11 @@ class ViewController: UIViewController {
             print("weight값이 올바르지 않습니다.")
             return
         }
-    
+        
+        UserDefaults.standard.set(nicknameTextField.text, forKey: "Nickname")
+        UserDefaults.standard.set(customHeight, forKey: "Height")
+        UserDefaults.standard.set(customWeight, forKey: "Weight")
+        
         showResult(result: calculateBMI(height: customHeight, weight: customWeight))
     }
     
@@ -83,15 +91,56 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func resetButtonClicked(_ sender: UIButton) {
+        
+        for key in ["Nickname", "Weight", "Height"] {
+            UserDefaults.standard.removeObject(forKey: key)
+        }
+        
+        nicknameTextField.text = ""
+        weightTextField.text = ""
+        heightTextField.text = ""
+        
+    }
+    
+    func setNicknameTextField() {
+        
+        nicknameTextField.text = UserDefaults.standard.string(forKey: "Nickname")
+    }
+    
+    func setResetButton() {
+        
+        resetButton.setTitle(" 정보 초기화하기 ", for: .normal)
+        resetButton.setTitleColor(.white, for: .normal)
+        resetButton.layer.cornerRadius = 10
+        resetButton.backgroundColor = .purple
+        
+    }
+    
+    
     func setLabels() {
         let titleSize = CGFloat(20)
         let labelSize = CGFloat(12)
         
         titleLabel.text = "BMI Calculator"
         titleLabel.font = .boldSystemFont(ofSize: titleSize)
-     
-        descLabel.text = "당신의 BMI 지수를\n알려드릴게요."
-        descLabel.numberOfLines = 2
+        
+        let nickname = UserDefaults.standard.string(forKey: "Nickname")
+        if let nickname = nickname, nickname != "" {
+            descLabel.text = """
+                                안녕하세요 \(nickname)님
+                                당신의 BMI 지수를
+                                알려드릴게요.
+                            """
+        } else {
+            descLabel.text = """
+                                안녕하세요!
+                                당신의 BMI 지수를
+                                알려드릴게요.
+                            """
+        }
+        
+        descLabel.numberOfLines = 3
         descLabel.font = .systemFont(ofSize: labelSize)
         
         heightLabel.text = "키가 어떻게 되시나요?(단위: cm)"
@@ -112,6 +161,10 @@ class ViewController: UIViewController {
         heightTextField.keyboardType = .numberPad
         heightTextField.layer.zPosition = 1
         
+        if let myHeight = UserDefaults.standard.string(forKey: "Height") {
+            heightTextField.text = myHeight
+        }
+        
     }
     
     func setWeightTextField() {
@@ -125,6 +178,10 @@ class ViewController: UIViewController {
         weightTextField.layer.zPosition = 1
         weightTextField.keyboardType = .numberPad
         seePasswordButton.setImage(UIImage(systemName: "eye"), for: .normal)
+        
+        if let myWeight = UserDefaults.standard.string(forKey: "Weight") {
+            weightTextField.text = myWeight
+        }
         
     }
     
