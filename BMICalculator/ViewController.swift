@@ -72,6 +72,7 @@ class ViewController: UIViewController {
         UserDefaults.standard.set(customHeight, forKey: "Height")
         UserDefaults.standard.set(customWeight, forKey: "Weight")
         
+        setLabels()
         showResult(result: calculateBMI(height: customHeight, weight: customWeight))
     }
     
@@ -97,6 +98,7 @@ class ViewController: UIViewController {
             UserDefaults.standard.removeObject(forKey: key)
         }
         
+        setLabels()
         nicknameTextField.text = ""
         weightTextField.text = ""
         heightTextField.text = ""
