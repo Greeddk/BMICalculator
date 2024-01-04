@@ -75,7 +75,6 @@ class ViewController: UIViewController {
         
         isSecretMode.toggle()
         if isSecretMode {
-//            seePasswordButton.backgroundImage(for: .normal) = UIImage(systemName: "eye")
             seePasswordButton.setImage(UIImage(systemName: "eye"), for: .normal)
             weightTextField.isSecureTextEntry = true
         } else {
@@ -125,6 +124,7 @@ class ViewController: UIViewController {
         weightTextField.isSecureTextEntry = true
         weightTextField.layer.zPosition = 1
         weightTextField.keyboardType = .numberPad
+        seePasswordButton.setImage(UIImage(systemName: "eye"), for: .normal)
         
     }
     
